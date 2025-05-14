@@ -1,10 +1,10 @@
 import express from "express";
 import cors from "cors";
 import dbconnection from "./config/dbconnection.js";
-import authRoutes from "././routes/auth.js";
-import ebookRoutes from "././routes/ebook.js";
-import orderRoutes from "././routes/order.js";
-import paymentRoutes from "././routes/payment.js";
+import authRoutes from "./routes/auth.js";
+import ebookRoutes from "./routes/ebook.js";
+import orderRoutes from "./routes/order.js";
+import paymentRoutes from "./routes/payment.js";
 import dotenv from "dotenv";
 
 dotenv.config();

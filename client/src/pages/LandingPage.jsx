@@ -21,7 +21,7 @@ const LandingPage = () => {
   // Fetch the ebooks on component mount
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/ebooks")
+      .get("https://ebook-store-backend.onrender.com/api/ebooks")
       .then((res) => setEbooks(res.data))
       .catch(() => toast.error("Failed to load ebooks"));
   }, []);
@@ -29,9 +29,12 @@ const LandingPage = () => {
   // Handle the purchase by sending the user's data and selected ebook ID
   const handleBuy = async (formData) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/payment/create", {
-        amount: selectedEbook.price,
-      });
+      const res = await axios.post(
+        "https://ebook-store-backend.onrender.com/api/payment/create",
+        {
+          amount: selectedEbook.price,
+        }
+      );
 
       setClientSecret(res.data.clientSecret);
       setCheckoutData({ formData, ebook: selectedEbook }); // Store data for payment verification

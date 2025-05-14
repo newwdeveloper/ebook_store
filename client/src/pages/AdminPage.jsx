@@ -14,10 +14,19 @@ const AdminPage = () => {
   const [editingId, setEditingId] = useState(null);
   const token = localStorage.getItem("token"); // Assume token is stored after login
 
+  // Logout handler
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    toast.success("Logged out successfully");
+    window.location.href = "/login"; // Redirect to login page
+  };
+
   // Fetch ebooks
   const fetchEbooks = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/ebooks");
+      const res = await axios.get(
+        "https://ebook-store-backend.onrender.com/api/ebooks"
+      );
       setEbooks(res.data);
     } catch (err) {
       toast.error("Failed to fetch ebooks");
@@ -47,15 +56,23 @@ const AdminPage = () => {
           return;
         }
 
-        await axios.put(`http://localhost:5000/api/ebooks/${editingId}`, form, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await axios.put(
+          `https://ebook-store-backend.onrender.com/api/ebooks/${editingId}`,
+          form,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         toast.success("Ebook updated!");
         setEditingId(null);
       } else {
-        await axios.post("http://localhost:5000/api/ebooks", form, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await axios.post(
+          "https://ebook-store-backend.onrender.com/api/ebooks",
+          form,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         toast.success("Ebook added!");
       }
 
@@ -83,9 +100,12 @@ const AdminPage = () => {
     }
 
     try {
-      await axios.delete(`http://localhost:5000/api/ebooks/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(
+        `https://ebook-store-backend.onrender.com/api/ebooks/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       toast.success("Ebook deleted!");
       fetchEbooks();
     } catch (err) {
@@ -107,7 +127,15 @@ const AdminPage = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Admin Panel</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Admin Panel</h1>
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          Logout
+        </button>
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
         <div>

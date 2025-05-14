@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const ebooks = await Ebook.find();
+    const ebooks = await Ebook.find().sort({ createdAt: -1 }); // ✅ Newest first;
     res.json(ebooks);
   } catch (error) {
     res.status(500).json({ error: error.message });

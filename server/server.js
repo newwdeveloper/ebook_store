@@ -5,9 +5,11 @@ import authRoutes from "././routes/auth.js";
 import ebookRoutes from "././routes/ebook.js";
 import orderRoutes from "././routes/order.js";
 import paymentRoutes from "././routes/payment.js";
+import dotenv from "dotenv";
 
+dotenv.config();
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());

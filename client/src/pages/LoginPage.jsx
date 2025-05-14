@@ -12,10 +12,13 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-        userName, // changed from email
-        password,
-      });
+      const res = await axios.post(
+        "https://ebook-store-backend.onrender.com/api/auth/login",
+        {
+          userName, // changed from email
+          password,
+        }
+      );
       localStorage.setItem("token", res.data.token); // Save token
       toast.success("Login successful");
       navigate("/admin"); // Go to Admin page

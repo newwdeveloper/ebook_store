@@ -35,11 +35,14 @@ const CheckoutForm = ({ clientSecret, checkoutData, onSuccess }) => {
 
       if (paymentIntent.status === "succeeded") {
         // Call your backend to verify the payment and send ebook
-        await axios.post("http://localhost:5000/api/payment/verify", {
-          paymentIntentId: paymentIntent.id,
-          userData: checkoutData.formData,
-          ebookId: checkoutData.ebook._id,
-        });
+        await axios.post(
+          "https://ebook-store-backend.onrender.com/api/payment/verify",
+          {
+            paymentIntentId: paymentIntent.id,
+            userData: checkoutData.formData,
+            ebookId: checkoutData.ebook._id,
+          }
+        );
 
         toast.success("Ebook sent successfully!");
         onSuccess(); // Notify parent component

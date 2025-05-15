@@ -54,49 +54,42 @@ const EbookDetailsPage = () => {
       {/* Back Button */}
       <button
         onClick={() => navigate("/")}
-        className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-6 cursor-pointer font-semibold select-none"
+        className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-6 font-semibold"
       >
         <ArrowLeft size={22} />
         <span>Back to Home</span>
       </button>
 
       {/* Main Content */}
-      <div className="bg-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-2xl p-8 md:flex md:gap-10">
-        {/* Book Image with subtle 3D tilt and border */}
-        <div className="md:w-1/3 flex justify-center items-center">
-          <div
-            className="border border-gray-200 rounded-xl p-4 bg-white shadow-lg"
-            style={{ perspective: "1200px", transformStyle: "preserve-3d" }}
-          >
+      <div className="bg-white border rounded-2xl p-6 md:flex md:gap-10 shadow-md">
+        {/* Book Cover */}
+        <div className="md:w-1/3 w-full flex justify-center items-center">
+          <div className="group w-full max-w-xs">
             <img
               src={ebook.imageUrl}
               alt={ebook.title}
-              className="rounded-lg max-h-[480px] w-auto object-contain"
-              style={{
-                transform: "rotateY(-5deg) rotateX(3deg)",
-                boxShadow: "rgba(0, 0, 0, 0.25) 0px 30px 45px -15px",
-              }}
+              className="rounded-xl border border-gray-200 shadow-md w-full object-contain transition-transform duration-300 group-hover:scale-105"
             />
           </div>
         </div>
 
         {/* Details */}
         <div className="mt-6 md:mt-0 md:w-2/3 flex flex-col justify-center">
-          <h1 className="text-4xl font-extrabold text-gray-900 leading-tight">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900">
             {ebook.title}
           </h1>
 
-          <p className="mt-5 text-gray-700 text-lg leading-relaxed whitespace-pre-line">
+          <p className="mt-4 text-gray-700 leading-relaxed whitespace-pre-line text-lg">
             {ebook.description}
           </p>
 
-          <p className="mt-8 text-3xl font-bold text-green-700">
+          <p className="mt-6 text-2xl font-bold text-green-700">
             ₹{ebook.price}
           </p>
 
           <button
             onClick={() => setShowBuyForm(true)}
-            className="mt-10 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg transition-transform transform hover:scale-105 active:scale-95"
+            className="mt-8 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition-transform transform hover:scale-105 active:scale-95"
           >
             Buy Now
           </button>

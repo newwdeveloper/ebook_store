@@ -7,6 +7,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../components/CheckoutForm";
 import { ArrowLeft } from "lucide-react";
+import { ClipLoader } from "react-spinners";
 
 // Load Stripe key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
@@ -41,7 +42,13 @@ const EbookDetailsPage = () => {
     }
   };
 
-  if (!ebook) return <div className="p-4 text-center">Loading...</div>;
+  if (!ebook) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader color="#3B82F6" size={50} />
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 py-6 max-w-4xl mx-auto">

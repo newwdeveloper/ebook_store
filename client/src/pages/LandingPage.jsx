@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import EbookCard from "../components/EbookCard";
 import BuyForm from "../components/BuyForm";
+import CheckoutForm from "../components/CheckoutForm";
 import { ToastContainer, toast } from "react-toastify";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import CheckoutForm from "../components/CheckoutForm";
+import { ClipLoader } from "react-spinners";
 import "react-toastify/dist/ReactToastify.css";
-import ReactLoading from "react-loading";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -18,9 +18,8 @@ const LandingPage = () => {
   const [selectedEbook, setSelectedEbook] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
   const [checkoutData, setCheckoutData] = useState(null);
-
   const [currentPage, setCurrentPage] = useState(1);
-  const ebooksPerPage = 10;
+  const ebooksPerPage = 9;
 
   useEffect(() => {
     axios
@@ -43,7 +42,6 @@ const LandingPage = () => {
     }
   };
 
-  // Pagination logic
   const totalPages = Math.ceil(ebooks.length / ebooksPerPage);
   const indexOfLastEbook = currentPage * ebooksPerPage;
   const indexOfFirstEbook = indexOfLastEbook - ebooksPerPage;
@@ -56,15 +54,17 @@ const LandingPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-6">Ebook Store</h1>
+      <h1 className="text-4xl font-bold text-center text-blue-600 mb-10">
+        📚 Ebook Store
+      </h1>
 
       {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <ReactLoading type="spin" color="#3B82F6" height={50} width={50} />
+        <div className="flex justify-center items-center h-72">
+          <ClipLoader size={50} color="#3B82F6" />
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {currentEbooks.map((ebook) => (
               <EbookCard
                 key={ebook._id}
@@ -76,11 +76,11 @@ const LandingPage = () => {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex justify-center items-center gap-2 mt-8 flex-wrap">
+            <div className="flex flex-wrap justify-center items-center gap-2 mt-10">
               <button
                 onClick={handlePrev}
                 disabled={currentPage === 1}
-                className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+                className="px-4 py-2 text-sm font-medium bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
               >
                 Prev
               </button>
@@ -88,9 +88,9 @@ const LandingPage = () => {
                 <button
                   key={i}
                   onClick={() => handlePageClick(i + 1)}
-                  className={`px-3 py-1 rounded ${
+                  className={`px-4 py-2 text-sm rounded font-medium transition-all duration-150 ${
                     currentPage === i + 1
-                      ? "bg-blue-500 text-white"
+                      ? "bg-blue-600 text-white"
                       : "bg-gray-100 hover:bg-gray-300"
                   }`}
                 >
@@ -100,7 +100,7 @@ const LandingPage = () => {
               <button
                 onClick={handleNext}
                 disabled={currentPage === totalPages}
-                className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+                className="px-4 py-2 text-sm font-medium bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
               >
                 Next
               </button>
@@ -109,10 +109,10 @@ const LandingPage = () => {
         </>
       )}
 
-      {/* Show Buy Form */}
+      {/* Buy Form Modal */}
       {selectedEbook && !clientSecret && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg w-full max-w-md shadow-xl">
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 px-4">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <BuyForm
               ebook={selectedEbook}
               onSubmit={handleBuy}
@@ -122,10 +122,10 @@ const LandingPage = () => {
         </div>
       )}
 
-      {/* Show Checkout Form */}
+      {/* Stripe Checkout Modal */}
       {clientSecret && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg w-full max-w-md shadow-xl">
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 px-4">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <Elements stripe={stripePromise} options={{ clientSecret }}>
               <CheckoutForm
                 onSuccess={() => {

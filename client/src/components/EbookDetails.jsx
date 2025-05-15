@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import BuyForm from "../components/BuyForm";
 import { ToastContainer, toast } from "react-toastify";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../components/CheckoutForm";
+import { ArrowLeft } from "lucide-react";
 
 // Load Stripe key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const EbookDetailsPage = () => {
   const { id } = useParams();
-  console.log("Ebook ID:", id);
+  const navigate = useNavigate();
   const [ebook, setEbook] = useState(null);
   const [showBuyForm, setShowBuyForm] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
   const [checkoutData, setCheckoutData] = useState(null);
 
-  // Fetch ebook details
   useEffect(() => {
     axios
       .get(`https://ebook-store-backend.onrender.com/api/ebooks/${id}`)
@@ -26,7 +26,6 @@ const EbookDetailsPage = () => {
       .catch(() => toast.error("Failed to fetch ebook details"));
   }, [id]);
 
-  // Handle purchase flow
   const handleBuy = async (formData) => {
     try {
       const res = await axios.post(
@@ -42,29 +41,48 @@ const EbookDetailsPage = () => {
     }
   };
 
-  if (!ebook) return <div className="p-4">Loading...</div>;
+  if (!ebook) return <div className="p-4 text-center">Loading...</div>;
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
-      <img
-        src={ebook.imageUrl}
-        alt={ebook.title}
-        className="w-full h-64 object-cover rounded"
-      />
-      <h1 className="text-3xl font-bold mt-4">{ebook.title}</h1>
-      <p className="mt-2 text-gray-700">{ebook.description}</p>
-      <p className="mt-4 font-semibold text-lg">Price: ₹{ebook.price}</p>
-
+    <div className="px-4 py-6 max-w-4xl mx-auto">
+      {/* Home Button */}
       <button
-        onClick={() => setShowBuyForm(true)}
-        className="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        onClick={() => navigate("/")}
+        className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4"
       >
-        Buy Now
+        <ArrowLeft size={20} />
+        <span>Back to Home</span>
       </button>
 
-      {/* Show BuyForm */}
+      {/* Main Content */}
+      <div className="bg-white shadow-lg rounded-xl p-6 md:flex md:gap-6">
+        <img
+          src={ebook.imageUrl}
+          alt={ebook.title}
+          className="w-full md:w-1/3 h-64 object-cover rounded-lg"
+        />
+
+        <div className="mt-4 md:mt-0 md:w-2/3">
+          <h1 className="text-3xl font-bold text-gray-800">{ebook.title}</h1>
+          <p className="mt-3 text-gray-600 leading-relaxed">
+            {ebook.description}
+          </p>
+          <p className="mt-4 text-lg font-semibold text-green-700">
+            ₹{ebook.price}
+          </p>
+
+          <button
+            onClick={() => setShowBuyForm(true)}
+            className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition duration-300"
+          >
+            Buy Now
+          </button>
+        </div>
+      </div>
+
+      {/* Buy Form Modal */}
       {showBuyForm && !clientSecret && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg max-w-md w-full">
             <BuyForm
               ebook={ebook}
@@ -75,9 +93,9 @@ const EbookDetailsPage = () => {
         </div>
       )}
 
-      {/* Show Stripe Checkout */}
+      {/* Stripe Checkout Modal */}
       {clientSecret && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg max-w-md w-full">
             <Elements stripe={stripePromise} options={{ clientSecret }}>
               <CheckoutForm

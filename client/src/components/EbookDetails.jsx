@@ -9,7 +9,6 @@ import CheckoutForm from "../components/CheckoutForm";
 import { ArrowLeft } from "lucide-react";
 import { ClipLoader } from "react-spinners";
 
-// Load Stripe key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const EbookDetailsPage = () => {
@@ -51,36 +50,53 @@ const EbookDetailsPage = () => {
   }
 
   return (
-    <div className="px-4 py-6 max-w-4xl mx-auto">
-      {/* Home Button */}
+    <div className="px-6 py-8 max-w-5xl mx-auto">
+      {/* Back Button */}
       <button
         onClick={() => navigate("/")}
-        className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4 cursor-pointer"
+        className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-6 cursor-pointer font-semibold select-none"
       >
-        <ArrowLeft size={20} />
-        <span className="cursor-pointer">Back to Home</span>
+        <ArrowLeft size={22} />
+        <span>Back to Home</span>
       </button>
 
       {/* Main Content */}
-      <div className="bg-white shadow-lg rounded-xl p-6 md:flex md:gap-6">
-        <img
-          src={ebook.imageUrl}
-          alt={ebook.title}
-          className="w-full md:w-1/3 h-64 object-cover rounded-lg"
-        />
+      <div className="bg-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-2xl p-8 md:flex md:gap-10">
+        {/* Book Image with subtle 3D tilt and border */}
+        <div className="md:w-1/3 flex justify-center items-center">
+          <div
+            className="border border-gray-200 rounded-xl p-4 bg-white shadow-lg"
+            style={{ perspective: "1200px", transformStyle: "preserve-3d" }}
+          >
+            <img
+              src={ebook.imageUrl}
+              alt={ebook.title}
+              className="rounded-lg max-h-[480px] w-auto object-contain"
+              style={{
+                transform: "rotateY(-5deg) rotateX(3deg)",
+                boxShadow: "rgba(0, 0, 0, 0.25) 0px 30px 45px -15px",
+              }}
+            />
+          </div>
+        </div>
 
-        <div className="mt-4 md:mt-0 md:w-2/3">
-          <h1 className="text-3xl font-bold text-gray-800">{ebook.title}</h1>
-          <p className="mt-3 text-gray-600 leading-relaxed">
+        {/* Details */}
+        <div className="mt-6 md:mt-0 md:w-2/3 flex flex-col justify-center">
+          <h1 className="text-4xl font-extrabold text-gray-900 leading-tight">
+            {ebook.title}
+          </h1>
+
+          <p className="mt-5 text-gray-700 text-lg leading-relaxed whitespace-pre-line">
             {ebook.description}
           </p>
-          <p className="mt-4 text-lg font-semibold text-green-700">
+
+          <p className="mt-8 text-3xl font-bold text-green-700">
             ₹{ebook.price}
           </p>
 
           <button
             onClick={() => setShowBuyForm(true)}
-            className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition duration-300"
+            className="mt-10 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg transition-transform transform hover:scale-105 active:scale-95"
           >
             Buy Now
           </button>

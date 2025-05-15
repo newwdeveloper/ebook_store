@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const EbookCard = ({ ebook, onBuy }) => {
   const [showFull, setShowFull] = useState(false);
-
   const toggleDescription = () => setShowFull((prev) => !prev);
 
   const shortDescription =
@@ -12,17 +12,19 @@ const EbookCard = ({ ebook, onBuy }) => {
 
   return (
     <div className="bg-white shadow-md rounded-lg p-4">
-      <img
-        src={ebook.imageUrl}
-        alt={ebook.title}
-        className="w-full h-48 object-cover rounded"
-      />
-      <h2 className="text-xl font-bold mt-2">{ebook.title}</h2>
+      <Link to={`/ebook/${ebook._id}`}>
+        <img
+          src={ebook.imageUrl}
+          alt={ebook.title}
+          className="w-full h-48 object-cover rounded"
+        />
+        <h2 className="text-xl font-bold mt-2">{ebook.title}</h2>
+      </Link>
 
       <p className="text-gray-600">
         {showFull ? ebook.description : shortDescription}
       </p>
-      {ebook.description.length > 20 && (
+      {ebook.description.length > 100 && (
         <button
           onClick={toggleDescription}
           className="text-blue-500 text-sm mt-1 hover:underline"

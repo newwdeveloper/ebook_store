@@ -58,4 +58,17 @@ router.put("/:id", authMiddleware, async (req, res) => {
   }
 });
 
+// GET /api/ebooks/:id - Get one ebook by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const ebook = await Ebook.findById(req.params.id);
+    if (!ebook) {
+      return res.status(404).json({ error: "Ebook not found" });
+    }
+    res.json(ebook);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export default router;

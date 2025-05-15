@@ -55,10 +55,10 @@ const EbookDetailsPage = () => {
       {/* Home Button */}
       <button
         onClick={() => navigate("/")}
-        className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4"
+        className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4 cursor-pointer"
       >
         <ArrowLeft size={20} />
-        <span>Back to Home</span>
+        <span className="cursor-pointer">Back to Home</span>
       </button>
 
       {/* Main Content */}

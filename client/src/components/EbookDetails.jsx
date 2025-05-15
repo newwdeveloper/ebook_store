@@ -63,7 +63,7 @@ const EbookDetailsPage = () => {
       {/* Main Content */}
       <div className="bg-white border rounded-2xl p-6 md:flex md:gap-10 shadow-md">
         {/* Book Cover */}
-        <div className="md:w-1/3 w-full flex justify-center items-center">
+        <div className="md:w-1/3 w-full flex justify-center items-start">
           <div className="group w-full max-w-xs">
             <img
               src={ebook.imageUrl}
